@@ -1,15 +1,17 @@
-%          Simple Agent Model           Assignment Week 5
-%          Sander Martijn Kerkdijk      Max Turpijn
+%          Exhaustive search parameter tuning   Assignment Week 5
+%          Sander Martijn Kerkdijk               Max Turpijn
 %          Course: Behaviour Dynamics in social Networks 
 %               Vrije Universiteit Amsterdam 2015
-%                   Copying will be punished
+%                    Copying will be punished
 
 % INITIALIZATION
 
+%   Load reference Dataset
 load EmpiricalData.mat;
+%   Load given Weights of the edges.
 load WeightEdges.mat;
 
-%   Calculate size if Given Matrix
+%   Calculate size of Given Matrix
 
 Size = size(EmpiricalData);
 
@@ -71,21 +73,25 @@ while TriedUpdateParameters <= (MaximumUpdate/Accurancy)
              for agents = 1:NumberAgents
                 ssum = ssum + ((WeightOfEdges(agents,agent)*State((Steps-1),agents)));  
              end
-            %   add find sum to given agent by aggimpact(t) + (SSUM/ScaledVector)
+            %   Add find sum to given agent by aggimpact(t) + (SSUM/ScaledVector)
             AggImpact(agent) = AggImpact(agent) +((ssum)/ScaleVector(agent)); 
         end 
             for agents = 1:NumberAgents
-                %   Termine the opinions
+                %   Determine the opinions
                 %   State (t+1) = State(t) + ((UpdateParameter * AggImpact)- State(t)
                 State(Steps,agents) = State((Steps-1),agents) + (UpdateSpeedParameter*((AggImpact(agents) - State((Steps-1),agents))));    
             end
     end
     
-   %    Calculate the Mean Square Error for the given UpdateRule
+   %    Calculate the Mean Square Error for the given UpdateRule^2
+   
+   %    D = absolute value of (givenDataset - last produced state) POWER 2
    D = abs(EmpiricalData-State).^2;
+   
+   %    Mean Square Error = Sum of D/number of elements in given dataset
    MSE = sum(D(:))/numel(EmpiricalData); 
    
-   %   Put the MSE into the Matrix ErrorUpdateParameter 
+   %    Put the MSE into the Matrix ErrorUpdateParameter 
    ErrorOfUpdateParameter(TriedUpdateParameters,1) = MSE;
    
    %    Higher the TriedUpdateParamaters with 1
@@ -95,14 +101,14 @@ while TriedUpdateParameters <= (MaximumUpdate/Accurancy)
    
 end  
 
-%   Find the minimum error between the given set and a applied UpdateParameter
+%       Find the minimum error between the given set and a applied UpdateParameter
 [MinimumError,PositionOfSmallestError] = min(ErrorOfUpdateParameter);
 
-%   Convert row number to real value
+%       Convert row number to real value
 ValueOfMinimalError = (PositionOfSmallestError * Accurancy);
 
 
-%   Plot the X of the UpdateParameterValue and Y UpdateParameterError
+%       Plot the X of the UpdateParameterValue and Y UpdateParameterError
 plot(ErrorOfUpdateParameter);
 title({'Plot of Error within update', 'Lowest Error: ',num2str(MinimumError),' with a update-parameter:',num2str(NumberOfMinimalError)});
 disp(output);

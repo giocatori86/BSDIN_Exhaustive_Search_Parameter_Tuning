@@ -81,11 +81,15 @@ while TriedUpdateParameters <= (MaximumUpdate/Accurancy)
             end
     end
     
-   %    Calculate the Mean Square Error for the given UpdateRule
+   %    Calculate the Mean Square Error for the given UpdateRule^2
+   
+   %    D = absolute value of (givenDataset - last produced state) POWER 2
    D = abs(EmpiricalData-State).^2;
+   
+   %    Mean Square Error = Sum of D/number of elements in given dataset
    MSE = sum(D(:))/numel(EmpiricalData); 
    
-   %   Put the MSE into the Matrix ErrorUpdateParameter 
+   %    Put the MSE into the Matrix ErrorUpdateParameter 
    ErrorOfUpdateParameter(TriedUpdateParameters,1) = MSE;
    
    %    Higher the TriedUpdateParamaters with 1
@@ -102,7 +106,7 @@ end
 ValueOfMinimalError = (PositionOfSmallestError * Accurancy);
 
 
-%   Plot the X of the UpdateParameter and Y the Error
+%   Plot the X of the UpdateParameterValue and Y UpdateParameterError
 plot(ErrorOfUpdateParameter);
 title({'Plot of Error within update', 'Lowest Error: ',num2str(MinimumError),' with a update-parameter:',num2str(NumberOfMinimalError)});
 disp(output);
