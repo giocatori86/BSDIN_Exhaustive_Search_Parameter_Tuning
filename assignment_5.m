@@ -83,7 +83,8 @@ while TriedUpdateParameters <= (MaximumUpdate/Accurancy)
             end
     end
     
-   %    Calculate the Mean Square Error for the given UpdateRule^2
+    
+   %    Calculate the Mean Square Error 
    
    %    D = absolute value of (givenDataset - last produced state) POWER 2
    D = abs(EmpiricalData-State).^2;
