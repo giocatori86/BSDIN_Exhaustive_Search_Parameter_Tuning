@@ -8,11 +8,11 @@
 
 %   Load reference Dataset
 load EmpiricalData.mat;
+
 %   Load given Weights of the edges.
 load WeightEdges.mat;
 
 %   Calculate size of Given Matrix
-
 Size = size(EmpiricalData);
 
 %   Set Accurancy of the search
@@ -71,7 +71,7 @@ while TriedUpdateParameters <= (MaximumUpdate/Accurancy)
             AggImpact(agent) = 0;
             %   calculate SUM
              for agents = 1:NumberAgents
-                ssum = ssum + ((WeightOfEdges(agents,agent)*State((Steps-1),agents)));  
+                ssum = ssum + ((WeightOfEdges(agent,agents)*State((Steps-1),agents)));  
              end
             %   Add find sum to given agent by aggimpact(t) + (SSUM/ScaledVector)
             AggImpact(agent) = AggImpact(agent) +((ssum)/ScaleVector(agent)); 
@@ -111,5 +111,5 @@ ValueOfMinimalError = (PositionOfSmallestError * Accurancy);
 
 %       Plot the X of the UpdateParameterValue and Y UpdateParameterError
 plot(ErrorOfUpdateParameter);
-title({'Plot of Error within update', 'Lowest Error: ',num2str(MinimumError),' with a update-parameter:',num2str(NumberOfMinimalError)});
-disp(output);
+title({'Plot of Error within update', 'Lowest Error: ',num2str(MinimumError),' with a update-parameter:',num2str(ValueOfMinimalError)});
+
