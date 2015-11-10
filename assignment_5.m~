@@ -1,23 +1,28 @@
-%          Simple Agent Model           Assignment Week 5
-%          Sander Martijn Kerkdijk      Max Turpijn
+%          Exhaustive search parameter tuning   Assignment Week 5
+%          Sander Martijn Kerkdijk               Max Turpijn
 %          Course: Behaviour Dynamics in social Networks 
 %               Vrije Universiteit Amsterdam 2015
-%                   Copying will be punished
+%                    Copying will be punished
 
 % INITIALIZATION
 
+%   Load reference Dataset
 load EmpiricalData.mat;
+
+%   Load given Weights of the edges.
 load WeightEdges.mat;
 
-%   Calculate size if Given Matrix
-
+%   Calculate size of Given Matrix
 Size = size(EmpiricalData);
 
 %   Set Accurancy of the search
 Accurancy = 0.001;
 
+%   Set Minimum Update
+Minimum = 0.2;
+
 %   Set Maximum Update
-MaximumUpdate = 1;
+MaximumUpdate = 0.2;
 
 %   Initialize first step
 StepSize = 1;
@@ -44,7 +49,7 @@ AggImpact = double(NumberAgents);
 State = zeros(EndTime,NumberAgents);
 
 %   Initialize ErrorUpdateParameter Array (output of the errors + number of updateparameter
-ErrorOfUpdateParameter = zeros((MaximumUpdate/Accurancy),1);
+ErrorOfUpdateParameter = zeros((MaximumUpdate-MinimumUpdate)/Accurancy)),1);
 
 %   Set a initial error (High because of the threshold)
 Error = 100;
@@ -69,19 +74,20 @@ while TriedUpdateParameters <= (MaximumUpdate/Accurancy)
             AggImpact(agent) = 0;
             %   calculate SUM
              for agents = 1:NumberAgents
-                ssum = ssum + ((WeightOfEdges(agents,agent)*State((Steps-1),agents)));  
+                ssum = ssum + ((WeightOfEdges(agent,agents)*State((Steps-1),agents)));  
              end
-            %   add find sum to given agent by aggimpact(t) + (SSUM/ScaledVector)
+            %   Add find sum to given agent by aggimpact(t) + (SSUM/ScaledVector)
             AggImpact(agent) = AggImpact(agent) +((ssum)/ScaleVector(agent)); 
         end 
             for agents = 1:NumberAgents
-                %   Termine the opinions
+                %   Determine the opinions
                 %   State (t+1) = State(t) + ((UpdateParameter * AggImpact)- State(t)
                 State(Steps,agents) = State((Steps-1),agents) + (UpdateSpeedParameter*((AggImpact(agents) - State((Steps-1),agents))));    
             end
     end
     
-   %    Calculate the Mean Square Error for the given UpdateRule^2
+    
+   %    Calculate the Mean Square Error 
    
    %    D = absolute value of (givenDataset - last produced state) POWER 2
    D = abs(EmpiricalData-State).^2;
@@ -99,14 +105,17 @@ while TriedUpdateParameters <= (MaximumUpdate/Accurancy)
    
 end  
 
-%   Find the minimum error between the given set and a applied UpdateParameter
+%       Find the minimum error between the given set and a applied UpdateParameter
 [MinimumError,PositionOfSmallestError] = min(ErrorOfUpdateParameter);
 
-%   Convert row number to real value
+%       Convert row number to real value
 ValueOfMinimalError = (PositionOfSmallestError * Accurancy);
 
 
-%   Plot the X of the UpdateParameterValue and Y UpdateParameterError
+%       Plot the X of the UpdateParameterValue and Y UpdateParameterError
 plot(ErrorOfUpdateParameter);
-title({'Plot of Error within update', 'Lowest Error: ',num2str(MinimumError),' with a update-parameter:',num2str(NumberOfMinimalError)});
-disp(output);
+ylabel('Error')
+xlabel('Update Weight')
+set(gca, 'XTickLabel',{num2str((Accurancy*0)*(MaximumUpdate/Accurancy)),num2str((Accurancy*0.1)*(MaximumUpdate/Accurancy)),num2str((Accurancy*0.2)*(MaximumUpdate/Accurancy)),num2str((Accurancy*0.3)*(MaximumUpdate/Accurancy)),num2str((Accurancy*0.4)*(MaximumUpdate/Accurancy)),num2str((Accurancy*0.5)*(MaximumUpdate/Accurancy)),num2str((Accurancy*0.6)*(MaximumUpdate/Accurancy)),num2str((Accurancy*0.7)*(MaximumUpdate/Accurancy)),num2str((Accurancy*0.8)*(MaximumUpdate/Accurancy)),num2str((Accurancy*0.9)*(MaximumUpdate/Accurancy)),num2str((Accurancy*1)*(MaximumUpdate/Accurancy))})
+title({'Plot of Error within update', 'Lowest Error: ',num2str(MinimumError),' with a update-parameter:',num2str(ValueOfMinimalError)});
+

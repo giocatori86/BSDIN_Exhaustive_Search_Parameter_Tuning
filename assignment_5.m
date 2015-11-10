@@ -19,7 +19,7 @@ Size = size(EmpiricalData);
 Accurancy = 0.001;
 
 %   Set Maximum Update
-MaximumUpdate = 1;
+MaximumUpdate = 0.5;
 
 %   Initialize first step
 StepSize = 1;
@@ -111,5 +111,8 @@ ValueOfMinimalError = (PositionOfSmallestError * Accurancy);
 
 %       Plot the X of the UpdateParameterValue and Y UpdateParameterError
 plot(ErrorOfUpdateParameter);
+ylabel('Mean Square Error')
+xlabel('UpdateSpeed Parameter')
+set(gca, 'XTickLabel',{num2str((Accurancy*0)*(MaximumUpdate/Accurancy)),num2str((Accurancy*0.1)*(MaximumUpdate/Accurancy)),num2str((Accurancy*0.2)*(MaximumUpdate/Accurancy)),num2str((Accurancy*0.3)*(MaximumUpdate/Accurancy)),num2str((Accurancy*0.4)*(MaximumUpdate/Accurancy)),num2str((Accurancy*0.5)*(MaximumUpdate/Accurancy)),num2str((Accurancy*0.6)*(MaximumUpdate/Accurancy)),num2str((Accurancy*0.7)*(MaximumUpdate/Accurancy)),num2str((Accurancy*0.8)*(MaximumUpdate/Accurancy)),num2str((Accurancy*0.9)*(MaximumUpdate/Accurancy)),num2str((Accurancy*1)*(MaximumUpdate/Accurancy))})
 title({'Plot of Error within update', 'Lowest Error: ',num2str(MinimumError),' with a update-parameter:',num2str(ValueOfMinimalError)});
 
