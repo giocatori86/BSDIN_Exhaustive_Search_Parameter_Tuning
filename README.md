@@ -9,4 +9,4 @@ For the course: Behaviour Dynamics in Social Networks.
 ### Version
 0.0.7
 
-**Free Software, Hell Yeah!** <-- but people from my course, please dont copy
+**Free Script, Hell Yeah!** <-- but people from my course, please dont copy
