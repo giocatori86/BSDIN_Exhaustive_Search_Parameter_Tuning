@@ -83,17 +83,16 @@ while TriedUpdateParameters <= (MaximumUpdate/Accurancy)
             end
     end
     
+   %    Calculate the SSR 
+   
+   %    Difference = ReferenceDataSet - DataSet by given update speed variable
+    Difference =  EmpiricalData-State;
     
-   %    Calculate the Mean Square Error 
+    % SSR = (The sum of all differences between referencedataset and DataSet by given update Variable) ^2 
+    SSR = sum(Difference(:).^2);
    
-   %    D = absolute value of (givenDataset - last produced state) POWER 2
-   D = abs(EmpiricalData-State).^2;
-   
-   %    Mean Square Error = Sum of D/number of elements in given dataset
-   MSE = sum(D(:))/numel(EmpiricalData); 
-   
-   %    Put the MSE into the Matrix ErrorUpdateParameter 
-   ErrorOfUpdateParameter(TriedUpdateParameters,1) = MSE;
+   %    Put the SSR into the Matrix ErrorUpdateParameter 
+   ErrorOfUpdateParameter(TriedUpdateParameters,1) = SSR;
    
    %    Higher the TriedUpdateParamaters with 1
    TriedUpdateParameters = TriedUpdateParameters +1;
@@ -114,5 +113,11 @@ plot(ErrorOfUpdateParameter);
 ylabel('Mean Square Error')
 xlabel('UpdateSpeed Parameter')
 set(gca, 'XTickLabel',{num2str((Accurancy*0)*(MaximumUpdate/Accurancy)),num2str((Accurancy*0.1)*(MaximumUpdate/Accurancy)),num2str((Accurancy*0.2)*(MaximumUpdate/Accurancy)),num2str((Accurancy*0.3)*(MaximumUpdate/Accurancy)),num2str((Accurancy*0.4)*(MaximumUpdate/Accurancy)),num2str((Accurancy*0.5)*(MaximumUpdate/Accurancy)),num2str((Accurancy*0.6)*(MaximumUpdate/Accurancy)),num2str((Accurancy*0.7)*(MaximumUpdate/Accurancy)),num2str((Accurancy*0.8)*(MaximumUpdate/Accurancy)),num2str((Accurancy*0.9)*(MaximumUpdate/Accurancy)),num2str((Accurancy*1)*(MaximumUpdate/Accurancy))})
-title({'Plot of Error within update', 'Lowest Error: ',num2str(MinimumError),' with a update-parameter:',num2str(ValueOfMinimalError)});
+title({'Plot of Error within update', 'Lowest Error: ',num2str(MinimumError),' with Update-Parameter:',num2str(ValueOfMinimalError)});
+
+disp(num2str(MinimumError));
+
+
+
+
 
